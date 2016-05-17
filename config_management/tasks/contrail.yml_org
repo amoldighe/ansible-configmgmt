@@ -1,0 +1,64 @@
+---
+####### create new dir
+     - name: create new dir
+       file: path=/var/ansible-data/contrail/{{ ansible_hostname }}/etc/ state=directory 
+#copy cassandra file
+     - name: copy cassandra file  in localsystem
+       command: rsync -avpz /etc/cassandra /var/ansible-data/contrail/{{ ansible_hostname }}/etc/ --delete
+#copy contrail file
+     - name: copy contrail file  in localsystem
+       command: rsync -avpz /etc/contrail /var/ansible-data/contrail/{{ ansible_hostname }}/etc/ --delete
+#copy fuel file
+     - name: copy fuel file  in localsystem
+       command: rsync -avpz /etc/fuel /var/ansible-data/contrail/{{ ansible_hostname }}/etc/ --delete
+#copy grub.d file
+     - name: copy grub.d file  in localsystem
+       command: rsync -avpz /etc/grub.d /var/ansible-data/contrail/{{ ansible_hostname }}/etc/ --delete
+#copy haproxy file
+     - name: copy haproxy file  in localsystem
+       command: rsync -avpz /etc/haproxy /var/ansible-data/contrail/{{ ansible_hostname }}/etc/ --delete
+#copy ifmap-server file
+     - name: copy ifmap-server file  in localsystem
+       command: rsync -avpz /etc/ifmap-server /var/ansible-data/contrail/{{ ansible_hostname }}/etc/ --delete
+#copy keepalived file
+     - name: copy keepalived file  in localsystem
+       command: rsync -avpz /etc/keepalived /var/ansible-data/contrail/{{ ansible_hostname }}/etc/ --delete
+#copy neutron file
+     - name: copy neutron file  in localsystem
+       command: rsync -avpz /etc/neutron /var/ansible-data/contrail/{{ ansible_hostname }}/etc/ --delete
+#copy logrotate.d file
+     - name: copy logrotate.d file  in localsystem
+       command: rsync -avpz /etc/logrotate.d /var/ansible-data/contrail/{{ ansible_hostname }}/etc/ --delete
+# copy nailgun-agent
+     - name: copy nailgun-agent file  in localsystem
+       command: rsync -avpz /etc/nailgun-agent /var/ansible-data/contrail/{{ ansible_hostname }}/etc/ --delete
+# copy network file
+     - name: copy network file  in localsystem
+       command: rsync -avpz /etc/network /var/ansible-data/contrail/{{ ansible_hostname }}/etc/ --delete
+#copy rsyslog.d file
+     - name: copy rsyslog.d file  in localsystem
+       command: rsync -avpz /etc/rsyslog.d /var/ansible-data/contrail/{{ ansible_hostname }}/etc/ --delete
+#copy rabbitmq file
+     - name: copy rabbitmq file  in localsystem
+       command: rsync -avpz /etc/rabbitmq /var/ansible-data/contrail/{{ ansible_hostname }}/etc/ --delete
+#copy supervisor file
+     - name: copy supervisor file  in localsystem
+       command: rsync -avpz /etc/supervisor /var/ansible-data/contrail/{{ ansible_hostname }}/etc/ --delete
+#copy zabbix fil
+     - name: copy zabbix file  in localsystem
+       command: rsync -avpz /etc/zabbix /var/ansible-data/contrail/{{ ansible_hostname }}/etc/ --delete
+#copy zookeeper file
+     - name: copy zookeeper file  in localsystem
+       command: rsync -avpz /etc/zookeeper /var/ansible-data/contrail/{{ ansible_hostname }}/etc/ --delete
+#
+     - name: sync  configuration file from ceph node to fuel node /var/config_data/PE1/contrail
+       synchronize:
+            mode=pull
+            src=/var/ansible-data/contrail/{{ ansible_hostname }}/
+            dest=/var/config_data/PE1/contrail/{{ ansible_hostname }}/
+            copy_links=no
+            recursive=yes
+            perms=yes
+            delete=yes
+       tags: rsync
+    

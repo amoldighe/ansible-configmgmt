@@ -1,0 +1,89 @@
+---
+- hosts: local
+  gather_facts: yes
+  remote_user: root
+  tags: dirGitsetup
+  tasks:
+
+    - name: creating configuration data directory
+      file: path=/var/config_data state=directory
+      register: png
+    - debug: var=png.stdout
+    
+    - name: pulling existing data from git 
+      git: repo=git@10.135.80.174:amol.dighe/git-test.git dest=/var/config_data/ key_file=/root/.ssh/id_rsa.git accept_hostkey=yes force=yes 
+      register: png
+    - debug: var=png.stdout
+  
+    - name: create compute directory
+      file: path=/var/config_data/PE1/compute state=directory
+      register: png
+    - debug: var=png.stdout
+
+    - name: create ceph directory
+      file: path=/var/config_data/PE1/ceph state=directory
+      register: png
+    - debug: var=png.stdout
+
+    - name: create controller directory
+      file: path=/var/config_data/PE1/controller state=directory
+      register: png
+    - debug: var=png.stdout
+
+    - name: create contrail directory
+      file: path=/var/config_data/PE1/contrail state=directory
+      register: png
+    - debug: var=png.stdout
+
+    - name: create mongo directory
+      file: path=/var/config_data/PE1/mongo state=directory
+      register: png
+    - debug: var=png.stdout
+
+- hosts: compute
+  gather_facts: yes
+  remote_user: root
+  tags: copyCompute
+  tasks:
+    - include: tasks/compute.yml
+
+- hosts: ceph
+  gather_facts: yes
+  remote_user: root
+  tags: copyCeph
+  tasks:
+    - include: tasks/ceph.yml
+
+- hosts: controller
+  gather_facts: yes
+  remote_user: root
+  tags: copyController
+  tasks:
+    - include: tasks/controller.yml
+
+- hosts: contrail
+  gather_facts: yes
+  remote_user: root
+  tags: copyContrail
+  tasks:
+    - include: tasks/contrail.yml
+
+- hosts: mongo
+  gather_facts: yes
+  remote_user: root
+  tags: copyMongo
+  tasks:
+    - include: tasks/mongo.yml
+
+- hosts: local
+  gather_facts: yes
+  remote_user: root
+  tags: pushtogit
+  tasks:
+
+  - name: list ssh keys
+    shell: /root/amol_scripts/config_management/gitPush.sh
+    register: png
+  - debug: var=png.stdout
+
+

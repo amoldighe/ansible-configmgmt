@@ -1,0 +1,7 @@
+---
+cloud_env: PE1 
+git_checkout_dir: /var/config_data
+local_config_dir: /var/local_config_data
+git_ssh_url: git@10.135.80.174:amol.dighe/git-test.git
+git_ssh_key: /root/.ssh/id_rsa.git
+

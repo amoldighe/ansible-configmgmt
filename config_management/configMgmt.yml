@@ -1,0 +1,101 @@
+---
+- hosts: local
+  gather_facts: yes
+  remote_user: root
+  vars_files:
+    - config_vars.yml
+  tags: dirGitsetup
+  tasks:
+
+    - name: creating configuration data directory
+      file: path={{git_checkout_dir}} state=directory
+      register: png
+    - debug: var=png.stdout
+    
+    - name: pulling existing data from git 
+      git: repo={{git_ssh_url}} dest={{git_checkout_dir}} key_file={{git_ssh_key}} accept_hostkey=yes force=yes 
+      register: png
+    - debug: var=png.stdout
+  
+    - name: create compute directory
+      file: path={{git_checkout_dir}}/{{cloud_env}}/compute state=directory
+      register: png
+    - debug: var=png.stdout
+
+    - name: create ceph directory
+      file: path={{git_checkout_dir}}/{{cloud_env}}/ceph state=directory
+      register: png
+    - debug: var=png.stdout
+
+    - name: create controller directory
+      file: path={{git_checkout_dir}}/{{cloud_env}}/controller state=directory
+      register: png
+    - debug: var=png.stdout
+
+    - name: create contrail directory
+      file: path={{git_checkout_dir}}/{{cloud_env}}/contrail state=directory
+      register: png
+    - debug: var=png.stdout
+
+    - name: create mongo directory
+      file: path={{git_checkout_dir}}/{{cloud_env}}/mongo state=directory
+      register: png
+    - debug: var=png.stdout
+
+- hosts: compute
+  gather_facts: yes
+  remote_user: root
+  vars_files:
+    - config_vars.yml
+  tags: copyCompute
+  tasks:
+    - include: tasks/compute.yml
+
+- hosts: ceph
+  gather_facts: yes
+  remote_user: root
+  vars_files:
+    - config_vars.yml
+  tags: copyCeph
+  tasks:
+    - include: tasks/ceph.yml
+
+- hosts: controller
+  gather_facts: yes
+  remote_user: root
+  vars_files:
+    - config_vars.yml
+  tags: copyController
+  tasks:
+    - include: tasks/controller.yml
+
+- hosts: contrail
+  gather_facts: yes
+  remote_user: root
+  vars_files:
+    - config_vars.yml
+  tags: copyContrail
+  tasks:
+    - include: tasks/contrail.yml
+
+- hosts: mongo
+  gather_facts: yes
+  remote_user: root
+  vars_files:
+    - config_vars.yml
+  tags: copyMongo
+  tasks:
+    - include: tasks/mongo.yml
+
+- hosts: local
+  gather_facts: yes
+  remote_user: root
+  tags: pushtogit
+  tasks:
+
+  - name: list ssh keys
+    shell: /root/amol_scripts/config_management/gitPush.sh
+    register: png
+  - debug: var=png.stdout
+
+

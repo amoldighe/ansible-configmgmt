@@ -1,0 +1,40 @@
+---
+####### create new dir
+     - name: create new dir
+       file: path=/var/config_data/ceph/{{ ansible_hostname }}/etc/ state=directory 
+#copy ceph file
+     - name: copy ceph file  in localsystem
+       command: rsync -avpz /etc/ceph /var/config_data/ceph/{{ ansible_hostname }}/etc/ --delete
+#copy fuel file
+     - name: copy fuel file  in localsystem
+       command: rsync -avpz /etc/fuel /var/config_data/ceph/{{ ansible_hostname }}/etc/ --delete
+#copy grub.d file
+     - name: copy grub.d file  in localsystem
+       command: rsync -avpz /etc/grub.d /var/config_data/ceph/{{ ansible_hostname }}/etc/ --delete
+#copy logrotate.d file
+     - name: copy logrotate.d file  in localsystem
+       command: rsync -avpz /etc/logrotate.d /var/config_data/ceph/{{ ansible_hostname }}/etc/ --delete
+# copy nailgun-agent
+     - name: copy nailgun-agent file  in localsystem
+       command: rsync -avpz /etc/nailgun-agent /var/config_data/ceph/{{ ansible_hostname }}/etc/ --delete
+# copy network file
+     - name: copy network file  in localsystem
+       command: rsync -avpz /etc/network /var/config_data/ceph/{{ ansible_hostname }}/etc/ --delete
+#copy rsyslog.d file
+     - name: copy rsyslog.d file  in localsystem
+       command: rsync -avpz /etc/rsyslog.d /var/config_data/ceph/{{ ansible_hostname }}/etc/ --delete
+#copy zabbix fil
+     - name: copy zabbix file  in localsystem
+       command: rsync -avpz /etc/zabbix /var/config_data/ceph/{{ ansible_hostname }}/etc/ --delete
+#
+     - name: sync  configuration file from ceph node to fuel node /var/config_data/PE1/ceph
+       synchronize:
+            mode=pull
+            src=/var/config_data/ceph/{{ ansible_hostname }}/
+            dest=/var/config_data/PE1/ceph/{{ ansible_hostname }}/
+            copy_links=no
+            recursive=yes
+            perms=yes
+            delete=yes
+       tags: rsync
+    

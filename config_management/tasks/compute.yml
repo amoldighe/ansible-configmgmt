@@ -1,0 +1,42 @@
+---
+     - name: create new dir
+       file: path={{local_config_dir}}/compute/{{ ansible_hostname }}/etc/ state=directory 
+     - name: copy ceilometer file in localsystem
+       command: rsync -avpz /etc/ceilometer {{local_config_dir}}/compute/{{ ansible_hostname }}/etc/ --delete
+     - name: copy ceph file  in localsystem
+       command: rsync -avpz /etc/ceph {{local_config_dir}}/compute/{{ ansible_hostname }}/etc/ --delete
+     - name: copy contrail file  in localsystem
+       command: rsync -avpz /etc/contrail {{local_config_dir}}/compute/{{ ansible_hostname }}/etc/ --delete
+     - name: copy fuel file  in localsystem
+       command: rsync -avpz /etc/fuel {{local_config_dir}}/compute/{{ ansible_hostname }}/etc/ --delete
+     - name: copy grub.d file  in localsystem
+       command: rsync -avpz /etc/grub.d {{local_config_dir}}/compute/{{ ansible_hostname }}/etc/ --delete
+     - name: copy haproxy file  in localsystem
+       command: rsync -avpz /etc/haproxy {{local_config_dir}}/compute/{{ ansible_hostname }}/etc/ --delete
+     - name: copy libvirt file  in localsystem
+       command: rsync -avpz /etc/libvirt {{local_config_dir}}/compute/{{ ansible_hostname }}/etc/ --delete
+     - name: copy logrotate.d file  in localsystem
+       command: rsync -avpz /etc/logrotate.d {{local_config_dir}}/compute/{{ ansible_hostname }}/etc/ --delete
+     - name: copy nailgun-agent file  in localsystem
+       command: rsync -avpz /etc/nailgun-agent {{local_config_dir}}/compute/{{ ansible_hostname }}/etc/ --delete
+     - name: copy network file  in localsystem
+       command: rsync -avpz /etc/network {{local_config_dir}}/compute/{{ ansible_hostname }}/etc/ --delete
+     - name: copy qemu file  in localsystem
+       command: rsync -avpz /etc/qemu {{local_config_dir}}/compute/{{ ansible_hostname }}/etc/ --delete
+     - name: copy rsyslog.d file  in localsystem
+       command: rsync -avpz /etc/rsyslog.d {{local_config_dir}}/compute/{{ ansible_hostname }}/etc/ --delete
+     - name: copy supervisor file  in localsystem
+       command: rsync -avpz /etc/supervisor {{local_config_dir}}/compute/{{ ansible_hostname }}/etc/ --delete
+     - name: copy zabbix file  in localsystem
+       command: rsync -avpz /etc/zabbix {{local_config_dir}}/compute/{{ ansible_hostname }}/etc/ --delete
+     - name: sync configuration file from compute node  to fuel node
+       synchronize:
+            mode=pull
+            src={{local_config_dir}}/compute/{{ ansible_hostname }}/
+            dest={{git_checkout_dir}}/{{cloud_env}}/compute/{{ ansible_hostname }}/
+            copy_links=no
+            recursive=yes
+            perms=yes
+            delete=yes
+       tags: rsync
+    

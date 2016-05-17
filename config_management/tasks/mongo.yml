@@ -1,0 +1,41 @@
+---
+####### create new dir
+     - name: create new dir
+       file: path={{local_config_dir}}/mongo/{{ ansible_hostname }}/etc/ state=directory 
+#copy fuel file
+     - name: copy fuel file  in localsystem
+       command: rsync -avpz /etc/fuel {{local_config_dir}}/mongo/{{ ansible_hostname }}/etc/ --delete
+#copy grub.d file
+     - name: copy grub.d file  in localsystem
+       command: rsync -avpz /etc/grub.d {{local_config_dir}}/mongo/{{ ansible_hostname }}/etc/ --delete
+#copy logrotate.d file
+     - name: copy logrotate.d file  in localsystem
+       command: rsync -avpz /etc/logrotate.d {{local_config_dir}}/mongo/{{ ansible_hostname }}/etc/ --delete
+# copy nailgun-agent
+     - name: copy nailgun-agent file  in localsystem
+       command: rsync -avpz /etc/nailgun-agent {{local_config_dir}}/mongo/{{ ansible_hostname }}/etc/ --delete
+# copy network file
+     - name: copy network file  in localsystem
+       command: rsync -avpz /etc/network {{local_config_dir}}/mongo/{{ ansible_hostname }}/etc/ --delete
+#copy rsyslog.d file
+     - name: copy rsyslog.d file  in localsystem
+       command: rsync -avpz /etc/rsyslog.d {{local_config_dir}}/mongo/{{ ansible_hostname }}/etc/ --delete
+#copy zabbix fil
+     - name: copy zabbix file  in localsystem
+       command: rsync -avpz /etc/zabbix {{local_config_dir}}/mongo/{{ ansible_hostname }}/etc/ --delete
+
+#copy mongo file
+     - name: copy mongo file  in localsystem
+       command: rsync -avpz /etc/mongodb.conf {{local_config_dir}}/mongo/{{ ansible_hostname }}/etc/ --delete
+#
+     - name: sync  configuration file from local mongo nodes to fuel node
+       synchronize:
+            mode=pull
+            src={{local_config_dir}}/mongo/{{ ansible_hostname }}/
+            dest={{git_checkout_dir}}/{{cloud_env}}/mongo/{{ ansible_hostname }}/
+            copy_links=no
+            recursive=yes
+            perms=yes
+            delete=yes
+       tags: rsync
+    

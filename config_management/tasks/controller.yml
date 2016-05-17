@@ -1,0 +1,97 @@
+---
+####### create new dir
+     - name: create new dir
+       file: path={{local_config_dir}}/controller/{{ ansible_hostname }}/etc/ state=directory 
+# copy apache2 file
+     - name: copy apache2 file in localsystem
+       command: rsync -avpz /etc/apache2 {{local_config_dir}}/controller/{{ ansible_hostname }}/etc/ --delete
+#copy ceph file
+     - name: copy ceph file  in localsystem
+       command: rsync -avpz /etc/ceph {{local_config_dir}}/controller/{{ ansible_hostname }}/etc/ --delete
+#copy ceilometer file
+     - name: copy ceilometer file  in localsystem
+       command: rsync -avpz /etc/ceilometer {{local_config_dir}}/controller/{{ ansible_hostname }}/etc/ --delete
+#copy cinder file
+     - name: copy cinder file  in localsystem
+       command: rsync -avpz /etc/cinder {{local_config_dir}}/controller/{{ ansible_hostname }}/etc/ --delete
+#copy corosync file
+     - name: copy corosync file  in localsystem
+       command: rsync -avpz /etc/corosync {{local_config_dir}}/controller/{{ ansible_hostname }}/etc/ --delete
+#copy crm file
+     - name: copy crm file  in localsystem
+       command: rsync -avpz /etc/crm {{local_config_dir}}/controller/{{ ansible_hostname }}/etc/ --delete
+#copy fuel file
+     - name: copy fuel file  in localsystem
+       command: rsync -avpz /etc/fuel {{local_config_dir}}/controller/{{ ansible_hostname }}/etc/ --delete
+#copy glance file
+     - name: copy glance file  in localsystem
+       command: rsync -avpz /etc/glance {{local_config_dir}}/controller/{{ ansible_hostname }}/etc/ --delete
+#copy grub.d file
+     - name: copy grub.d file  in localsystem
+       command: rsync -avpz /etc/grub.d {{local_config_dir}}/controller/{{ ansible_hostname }}/etc/ --delete
+#copy haproxy file
+     - name: copy haproxy file  in localsystem
+       command: rsync -avpz /etc/haproxy {{local_config_dir}}/controller/{{ ansible_hostname }}/etc/ --delete
+#copy heat file
+     - name: copy heat file  in localsystem
+       command: rsync -avpz /etc/heat {{local_config_dir}}/controller/{{ ansible_hostname }}/etc/ --delete
+#copy keystone file
+     - name: copy keystone file  in localsystem
+       command: rsync -avpz /etc/keystone {{local_config_dir}}/controller/{{ ansible_hostname }}/etc/ --delete
+#copy ldap file
+     - name: copy ldap file  in localsystem
+       command: rsync -avpz /etc/ldap {{local_config_dir}}/controller/{{ ansible_hostname }}/etc/ --delete
+#copy logrotate.d file
+     - name: copy logrotate.d file  in localsystem
+       command: rsync -avpz /etc/logrotate.d {{local_config_dir}}/controller/{{ ansible_hostname }}/etc/ --delete
+#copy lighttpd file
+     - name: copy lighttpd file  in localsystem
+       command: rsync -avpz /etc/lighttpd {{local_config_dir}}/controller/{{ ansible_hostname }}/etc/ --delete
+#copy murano file
+     - name: copy murano file  in localsystem
+       command: rsync -avpz /etc/murano {{local_config_dir}}/controller/{{ ansible_hostname }}/etc/ --delete
+#copy mysql file
+     - name: copy mysql file  in localsystem
+       command: rsync -avpz /etc/mysql {{local_config_dir}}/controller/{{ ansible_hostname }}/etc/ --delete
+# copy nailgun-agent
+     - name: copy nailgun-agent file  in localsystem
+       command: rsync -avpz /etc/nailgun-agent {{local_config_dir}}/controller/{{ ansible_hostname }}/etc/ --delete
+# copy network file
+     - name: copy network file  in localsystem
+       command: rsync -avpz /etc/network {{local_config_dir}}/controller/{{ ansible_hostname }}/etc/ --delete
+#copy nova file
+     - name: copy nova file  in localsystem
+       command: rsync -avpz /etc/nova {{local_config_dir}}/controller/{{ ansible_hostname }}/etc/ --delete
+#copy openhpi file
+     - name: copy openhpi file  in localsystem
+       command: rsync -avpz /etc/openhpi {{local_config_dir}}/controller/{{ ansible_hostname }}/etc/ --delete
+#copy openstack-dashboard file
+     - name: copy openstack-dashboard file  in localsystem 
+       command: rsync -avpz /etc/openstack-dashboard {{local_config_dir}}/controller/{{ ansible_hostname }}/etc/ --delete
+#copy openvswitch file
+     - name: copy openvswitch file  in localsystem
+       command: rsync -avpz /etc/openvswitch {{local_config_dir}}/controller/{{ ansible_hostname }}/etc/ --delete
+#copy rabbitmq file
+     - name: copy rabbitmq file  in localsystem
+       command: rsync -avpz /etc/rabbitmq {{local_config_dir}}/controller/{{ ansible_hostname }}/etc/ --delete
+#copy sahara file
+     - name: copy sahara file  in localsystem
+       command: rsync -avpz /etc/sahara {{local_config_dir}}/controller/{{ ansible_hostname }}/etc/ --delete
+#copy rsyslog.d file
+     - name: copy rsyslog.d file  in localsystem --delete
+       command: rsync -avpz /etc/rsyslog.d {{local_config_dir}}/controller/{{ ansible_hostname }}/etc/ --delete
+#copy zabbix fil
+     - name: copy zabbix file  in localsystem
+       command: rsync -avpz /etc/zabbix {{local_config_dir}}/controller/{{ ansible_hostname }}/etc/ --delete
+#
+     - name: sync  configuration file from controller node to fuel node
+       synchronize:
+            mode=pull
+            src={{local_config_dir}}/controller/{{ ansible_hostname }}/
+            dest={{git_checkout_dir}}/{{cloud_env}}/controller/{{ ansible_hostname }}/
+            copy_links=no
+            recursive=yes
+            perms=yes
+            delete=yes
+       tags: rsync
+    
